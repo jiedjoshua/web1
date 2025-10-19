@@ -686,9 +686,9 @@ def xss_challenge():
             </div>
             
             <form method="GET" class="search-form">
-                <input type="text" name="q" placeholder="Enter your search query..." value="{{ query }}">
+                    <input type="text" name="q" placeholder="Enter your search query..." value="{{ query }}">
                 <button type="submit" class="search-btn">Search</button>
-            </form>
+                </form>
             
             {% if query %}
             <div class="results">
@@ -704,44 +704,7 @@ def xss_challenge():
         </div>
         
         <script>
-            // Auto-reveal flag when page loads (after XSS injection)
-            document.addEventListener('DOMContentLoaded', function() {
-                // Check if there's a query parameter (indicating XSS attempt)
-                var urlParams = new URLSearchParams(window.location.search);
-                var query = urlParams.get('q');
-                
-                // If query contains script tags, automatically reveal the flag
-                if (query && (query.includes('<script>') || query.includes('&lt;script&gt;'))) {
-                    setTimeout(function() {
-                        var flagContainer = document.getElementById('flag-container');
-                        if (flagContainer) {
-                            flagContainer.style.display = 'block';
-                            flagContainer.style.background = '#2a2a2a';
-                            flagContainer.style.padding = '20px';
-                            flagContainer.style.border = '2px solid #4CAF50';
-                            flagContainer.style.borderRadius = '12px';
-                            flagContainer.style.color = '#4CAF50';
-                        }
-                    }, 500);
-                }
-            });
-            
-            // Override alert to also reveal flag
-            var originalAlert = window.alert;
-            window.alert = function(message) {
-                // Show the flag when alert is called
-                var flagContainer = document.getElementById('flag-container');
-                if (flagContainer) {
-                    flagContainer.style.display = 'block';
-                    flagContainer.style.background = '#2a2a2a';
-                    flagContainer.style.padding = '20px';
-                    flagContainer.style.border = '2px solid #4CAF50';
-                    flagContainer.style.borderRadius = '12px';
-                    flagContainer.style.color = '#4CAF50';
-                }
-                // Then show the original alert
-                originalAlert(message);
-            };
+            var _0x4a2b=['DOMContentLoaded','addEventListener','URLSearchParams','location','search','get','includes','&lt;script&gt;','getElementById','flag-container','style','display','block','background','#2a2a2a','padding','20px','border','2px solid #4CAF50','borderRadius','12px','color','#4CAF50','alert','setTimeout'];(function(_0x1f3c,_0x4a2b){var _0x3d5e=function(_0x2a1b){while(--_0x2a1b){_0x1f3c['push'](_0x1f3c['shift']());}};_0x3d5e(++_0x4a2b);}(_0x4a2b,0x1a4));var _0x3d5e=function(_0x1f3c,_0x4a2b){_0x1f3c=_0x1f3c-0x0;var _0x3d5e=_0x4a2b[_0x1f3c];return _0x3d5e;};document[_0x3d5e('0x1')](_0x3d5e('0x0'),function(){var _0x2a1b=new URLSearchParams(window[_0x3d5e('0x3')][_0x3d5e('0x4')]);var _0x1f3c=_0x2a1b[_0x3d5e('0x5')]('q');if(_0x1f3c&&(_0x1f3c[_0x3d5e('0x6')]('<script>')||_0x1f3c[_0x3d5e('0x6')](_0x3d5e('0x7')))){setTimeout(function(){var _0x4a2b=document[_0x3d5e('0x8')](_0x3d5e('0x9'));if(_0x4a2b){_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0xb')]=_0x3d5e('0xc');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0xd')]=_0x3d5e('0xe');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0xf')]=_0x3d5e('0x10');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0x11')]=_0x3d5e('0x12');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0x13')]=_0x3d5e('0x14');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0x15')]=_0x3d5e('0x16');}},0x1f4);}});var _0x2a1b=window[_0x3d5e('0x17')];window[_0x3d5e('0x17')]=function(_0x1f3c){var _0x4a2b=document[_0x3d5e('0x8')](_0x3d5e('0x9'));if(_0x4a2b){_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0xb')]=_0x3d5e('0xc');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0xd')]=_0x3d5e('0xe');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0xf')]=_0x3d5e('0x10');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0x11')]=_0x3d5e('0x12');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0x13')]=_0x3d5e('0x14');_0x4a2b[_0x3d5e('0xa')][_0x3d5e('0x15')]=_0x3d5e('0x16');}_0x2a1b(_0x1f3c);};
         </script>
     </body>
     </html>
