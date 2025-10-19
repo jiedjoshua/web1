@@ -330,32 +330,32 @@ def sql_injection_challenge():
                     if valid_login or len(result) > 1:  # Multiple results = SQL injection success
                         login_success = True
                     else:
-                        error = "❌ Login Unsuccessful - Invalid username or password combination"
+                        error = "Login Unsuccessful - Invalid username or password combination"
                 else:
-                    error = "❌ Login Unsuccessful - No matching user found in database"
+                    error = "Login Unsuccessful - No matching user found in database"
                 
             except sqlite3.Error as e:
                 # Show detailed database errors (helpful for SQL injection learning)
                 error_msg = str(e)
                 if "syntax error" in error_msg.lower():
-                    error = f"🚨 Database Syntax Error: {error_msg}"
+                    error = f"Database Syntax Error: {error_msg}"
                 elif "no such column" in error_msg.lower():
-                    error = f"🚨 Database Schema Error: {error_msg}"
+                    error = f"Database Schema Error: {error_msg}"
                 elif "unrecognized token" in error_msg.lower():
-                    error = f"🚨 Database Token Error: {error_msg}"
+                    error = f"Database Token Error: {error_msg}"
                 else:
-                    error = f"🚨 Database Error: {error_msg}"
+                    error = f"Database Error: {error_msg}"
                 
                 # Also log the failed query for educational purposes
                 print(f"[ERROR] SQL Error with query: {query}")
                 print(f"[ERROR] Error details: {error_msg}")
         else:
             if not username and not password:
-                error = "❌ Login Unsuccessful - Username and password are required"
+                error = "Login Unsuccessful - Username and password are required"
             elif not username:
-                error = "❌ Login Unsuccessful - Username field cannot be empty"
+                error = "Login Unsuccessful - Username field cannot be empty"
             elif not password:
-                error = "❌ Login Unsuccessful - Password field cannot be empty"
+                error = "Login Unsuccessful - Password field cannot be empty"
     
     return render_template_string('''
     <!DOCTYPE html>
@@ -368,7 +368,7 @@ def sql_injection_challenge():
             
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: #000000;
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
@@ -377,14 +377,13 @@ def sql_injection_challenge():
             }
             
             .login-container {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
+                background: #1a1a1a;
                 border-radius: 20px;
                 padding: 40px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
                 width: 100%;
                 max-width: 450px;
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                border: 1px solid #333;
             }
             
             .logo {
@@ -393,14 +392,14 @@ def sql_injection_challenge():
             }
             
             .logo h1 {
-                color: #333;
+                color: #fff;
                 font-size: 28px;
                 font-weight: 700;
                 margin-bottom: 5px;
             }
             
             .logo p {
-                color: #666;
+                color: #ccc;
                 font-size: 14px;
             }
             
@@ -412,7 +411,7 @@ def sql_injection_challenge():
             .form-group label {
                 display: block;
                 margin-bottom: 8px;
-                color: #333;
+                color: #fff;
                 font-weight: 600;
                 font-size: 14px;
             }
@@ -420,26 +419,27 @@ def sql_injection_challenge():
             .form-group input {
                 width: 100%;
                 padding: 15px 20px;
-                border: 2px solid #e1e5e9;
+                border: 2px solid #444;
                 border-radius: 12px;
                 font-size: 16px;
                 transition: all 0.3s ease;
-                background: #f8f9fa;
+                background: #2a2a2a;
+                color: #fff;
             }
             
             .form-group input:focus {
                 outline: none;
-                border-color: #667eea;
-                background: white;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                border-color: #666;
+                background: #333;
+                box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.1);
             }
             
             .login-btn {
                 width: 100%;
                 padding: 15px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: #333;
                 color: white;
-                border: none;
+                border: 2px solid #555;
                 border-radius: 12px;
                 font-size: 16px;
                 font-weight: 600;
@@ -449,17 +449,18 @@ def sql_injection_challenge():
             }
             
             .login-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+                background: #444;
+                border-color: #666;
             }
             
             .success {
-                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                background: #2a2a2a;
                 color: white;
                 padding: 20px;
                 border-radius: 12px;
                 margin: 20px 0;
                 text-align: center;
+                border: 2px solid #4a4a4a;
             }
             
             .success h3 {
@@ -468,23 +469,21 @@ def sql_injection_challenge():
             }
             
             .user-card {
-                background: rgba(255, 255, 255, 0.2);
+                background: #333;
                 padding: 15px;
                 border-radius: 8px;
                 margin: 10px 0;
-                border-left: 4px solid #00f2fe;
+                border-left: 4px solid #666;
             }
             
             .error {
-                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-                color: white;
+                background: #2a2a2a;
+                color: #ff6b6b;
                 padding: 20px;
                 border-radius: 12px;
                 margin: 20px 0;
                 text-align: center;
-                border: 2px solid rgba(255, 107, 107, 0.5);
-                box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
-                animation: shake 0.5s ease-in-out;
+                border: 2px solid #ff6b6b;
             }
             
             .error strong {
@@ -494,159 +493,60 @@ def sql_injection_challenge():
             }
             
             .database-error {
-                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-                border: 2px solid rgba(231, 76, 60, 0.5);
+                background: #2a2a2a;
+                border: 2px solid #e74c3c;
                 font-family: 'Courier New', monospace;
                 text-align: left;
-            }
-            
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-            
-            .hint-box {
-                background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
-                color: #333;
-                padding: 20px;
-                border-radius: 12px;
-                margin: 25px 0;
-                border-left: 4px solid #ff6b6b;
-            }
-            
-            .hint-box h4 {
-                margin-bottom: 10px;
-                color: #2c2c2c;
-            }
-            
-            .injection-examples {
-                background: #2c3e50;
-                color: #ecf0f1;
-                padding: 15px;
-                border-radius: 8px;
-                margin: 15px 0;
-                font-family: 'Courier New', monospace;
-                font-size: 14px;
-            }
-            
-            .injection-examples h5 {
                 color: #e74c3c;
-                margin-bottom: 10px;
             }
             
-            .payload {
-                background: rgba(231, 76, 60, 0.1);
-                padding: 8px;
-                border-radius: 4px;
-                margin: 5px 0;
-                border-left: 3px solid #e74c3c;
-            }
-            
-            .back-link {
-                text-align: center;
-                margin-top: 25px;
-            }
-            
-            .back-link a {
-                color: #667eea;
-                text-decoration: none;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
-            
-            .back-link a:hover {
-                color: #764ba2;
-            }
-            
-            .security-badge {
-                display: inline-block;
-                background: #27ae60;
-                color: white;
-                padding: 5px 12px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: 600;
-                margin-left: 10px;
-            }
         </style>
     </head>
     <body>
         <div class="login-container">
             <div class="logo">
-                <h1>🏦 SecureBank</h1>
-                <p>Enterprise Banking Portal <span class="security-badge">🔒 SECURED</span></p>
+                <h1>SecureBank</h1>
+                <p>Enterprise Banking Portal</p>
             </div>
             
             <form method="POST">
                 <div class="form-group">
-                    <label for="username">👤 Username</label>
+                    <label for="username">Username</label>
                     <input type="text" id="username" name="username" placeholder="Enter your username" value="{{ request.form.get('username', '') }}" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">🔑 Password</label>
+                    <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" value="{{ request.form.get('password', '') }}" required>
                 </div>
                 
-                <button type="submit" class="login-btn">🚀 Secure Login</button>
+                <button type="submit" class="login-btn">Login</button>
             </form>
             
             {% if error %}
             <div class="error {% if 'Database' in error %}database-error{% endif %}">
                 {% if 'Database' in error %}
-                    <strong>🚨 SYSTEM ERROR</strong>
+                    <strong>SYSTEM ERROR</strong>
                     <div style="margin-top: 10px; font-size: 14px;">{{ error }}</div>
-                    <div style="margin-top: 10px; font-size: 12px; opacity: 0.8;">
-                        💡 This error might reveal information about the database structure...
-                    </div>
                 {% else %}
-                    <strong>🔒 ACCESS DENIED</strong>
+                    <strong>ACCESS DENIED</strong>
                     <div style="margin-top: 8px;">{{ error }}</div>
-                    <div style="margin-top: 10px; font-size: 14px; opacity: 0.9;">
-                        🛡️ SecureBank Authentication System
-                    </div>
                 {% endif %}
             </div>
             {% endif %}
             
             {% if login_success and result %}
             <div class="success">
-                <h3>✅ Login Successful!</h3>
+                <h3>Login Successful!</h3>
                 <p>Welcome to SecureBank Portal</p>
                 {% for row in result %}
                 <div class="user-card">
-                    <strong>👤 User:</strong> {{ row.username }}<br>
-                    <strong>📝 Profile:</strong> {{ row.bio }}
+                    <strong>User:</strong> {{ row.username }}<br>
+                    <strong>Profile:</strong> {{ row.bio }}
                 </div>
                 {% endfor %}
             </div>
             {% endif %}
-            
-            <div class="hint-box">
-                <h4>🎯 Challenge Instructions</h4>
-                <p><strong>Goal:</strong> Bypass the authentication system without knowing valid credentials!</p>
-                <p><strong>Current Status:</strong> Normal login attempts with wrong passwords will fail.</p>
-                
-                <div class="injection-examples">
-                    <h5>💉 Try these SQL injection payloads:</h5>
-                    <div class="payload">Username: admin" OR 1=1 --</div>
-                    <div class="payload">Username: " OR "1"="1" --</div>
-                    <div class="payload">Username: admin" OR "a"="a</div>
-                    <div class="payload">Password: anything (when using above)</div>
-                </div>
-                
-                <p><strong>💡 How it works:</strong> The login checks if username AND password match. 
-                But SQL injection can make the WHERE clause return multiple rows or always be true, 
-                bypassing the authentication logic!</p>
-                
-                <p><strong>🔍 Test it:</strong> Try "admin" + "wrongpassword" first (should fail), 
-                then try the SQL injection payloads above!</p>
-            </div>
-            
-            <div class="back-link">
-                <a href="/">← Back to Challenge Hub</a>
-            </div>
         </div>
     </body>
     </html>
@@ -667,31 +567,130 @@ def xss_challenge():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Search Results - XSS Challenge</title>
+        <title>Search Portal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-            .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            h1 { color: #333; text-align: center; }
-            .search-box { margin: 20px 0; }
-            .search-box input { width: 70%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-            .search-box button { padding: 10px 20px; background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer; }
-            .results { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 4px; }
-            .hint { background: #e2e3e5; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 14px; }
-            .back-link { margin-top: 20px; }
-            .back-link a { color: #007acc; text-decoration: none; }
-            .hidden-flag { display: none; }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #000000;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+            
+            .search-container {
+                background: #1a1a1a;
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+                width: 100%;
+                max-width: 600px;
+                border: 1px solid #333;
+            }
+            
+            .logo {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            
+            .logo h1 {
+                color: #fff;
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 5px;
+            }
+            
+            .logo p {
+                color: #ccc;
+                font-size: 14px;
+            }
+            
+            .search-form {
+                margin-bottom: 25px;
+                display: flex;
+                gap: 10px;
+            }
+            
+            .search-form input {
+                flex: 1;
+                padding: 15px 20px;
+                border: 2px solid #444;
+                border-radius: 12px;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                background: #2a2a2a;
+                color: #fff;
+            }
+            
+            .search-form input:focus {
+                outline: none;
+                border-color: #666;
+                background: #333;
+                box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.1);
+            }
+            
+            .search-btn {
+                padding: 15px 25px;
+                background: #333;
+                color: white;
+                border: 2px solid #555;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .search-btn:hover {
+                background: #444;
+                border-color: #666;
+            }
+            
+            .results {
+                background: #2a2a2a;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 20px 0;
+                border: 2px solid #444;
+                color: #fff;
+            }
+            
+            .results h3 {
+                margin-bottom: 15px;
+                color: #fff;
+            }
+            
+            .results p {
+                color: #ccc;
+            }
+            
+            .hidden-flag {
+                display: none;
+                background: #2a2a2a;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 20px 0;
+                border: 2px solid #4a4a4a;
+                color: #fff;
+                text-align: center;
+            }
         </style>
     </head>
     <body>
-        <div class="container">
-            <h1>🔍 Advanced Search Portal</h1>
-            
-            <div class="search-box">
-                <form method="GET">
-                    <input type="text" name="q" placeholder="Enter your search query..." value="{{ query }}">
-                    <button type="submit">Search</button>
-                </form>
+        <div class="search-container">
+            <div class="logo">
+                <h1>Search Portal</h1>
+                <p>Advanced Search System</p>
             </div>
+            
+            <form method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Enter your search query..." value="{{ query }}">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
             
             {% if query %}
             <div class="results">
@@ -700,19 +699,9 @@ def xss_challenge():
             </div>
             {% endif %}
             
-            <div class="hint">
-                <strong>💡 Hint:</strong> This search function reflects your input directly into the page. 
-                Try entering some HTML or JavaScript in the search box. What happens?<br>
-                <strong>🎯 Goal:</strong> Execute JavaScript to reveal the hidden flag in the DOM!
-            </div>
-            
             <!-- Hidden flag that can be revealed through XSS -->
             <div class="hidden-flag" id="flag-container">
-                <p><strong>🚩 FLAG:</strong> flag{xss_expert_2025}</p>
-            </div>
-            
-            <div class="back-link">
-                <a href="/">← Back to Main Page</a>
+                <p><strong>FLAG:</strong> flag{xss_expert_2025}</p>
             </div>
         </div>
         
@@ -720,10 +709,11 @@ def xss_challenge():
             // Function to reveal flag (can be called via XSS)
             function revealFlag() {
                 document.getElementById('flag-container').style.display = 'block';
-                document.getElementById('flag-container').style.background = '#d4edda';
-                document.getElementById('flag-container').style.padding = '15px';
-                document.getElementById('flag-container').style.border = '2px solid #28a745';
-                document.getElementById('flag-container').style.borderRadius = '4px';
+                document.getElementById('flag-container').style.background = '#2a2a2a';
+                document.getElementById('flag-container').style.padding = '20px';
+                document.getElementById('flag-container').style.border = '2px solid #4CAF50';
+                document.getElementById('flag-container').style.borderRadius = '12px';
+                document.getElementById('flag-container').style.color = '#4CAF50';
             }
         </script>
     </body>
