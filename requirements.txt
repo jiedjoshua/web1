@@ -1,0 +1,24 @@
+# CTF Vulnerability Suite Dependencies
+# Flask web framework
+Flask==2.3.3
+
+# WSGI HTTP Server for production deployment
+gunicorn==21.2.0
+
+# Additional Flask utilities (if needed for future extensions)
+Werkzeug==2.3.7
+
+# Jinja2 templating engine (Flask dependency)
+Jinja2==3.1.2
+
+# Click for CLI commands (Flask dependency)
+click==8.1.7
+
+# MarkupSafe for template safety (Flask dependency)
+MarkupSafe==2.1.3
+
+# itsdangerous for secure signing (Flask dependency)
+itsdangerous==2.1.2
+
+# Blinker for signals (Flask dependency)
+blinker==1.6.3
