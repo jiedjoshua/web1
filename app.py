@@ -7,7 +7,12 @@ DO NOT deploy in production or expose to the internet.
 
 import sqlite3
 import os
+import logging
 from flask import Flask, request, render_template_string, jsonify
+
+# Configure logging for Railway debugging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -19,6 +24,30 @@ def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
+
+@app.route('/health')
+def health_check():
+    """Health check endpoint for Railway"""
+    try:
+        # Check if database exists and is accessible
+        conn = get_db_connection()
+        cursor = conn.execute("SELECT COUNT(*) FROM users")
+        count = cursor.fetchone()[0]
+        conn.close()
+        
+        return jsonify({
+            'status': 'healthy',
+            'database': 'connected',
+            'users_count': count,
+            'message': 'CTF Vulnerability Suite is running'
+        }), 200
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e),
+            'message': 'Database connection failed'
+        }), 500
 
 @app.route('/')
 def index():
@@ -277,13 +306,19 @@ def create_minimal_db():
     except Exception as e:
         print(f"Failed to create minimal database: {e}")
 
+# Initialize database on module load for production deployments
+try:
+    if not os.path.exists(DATABASE):
+        logger.info("Database not found. Creating minimal database...")
+        create_minimal_db()
+        logger.info("Database initialization completed")
+    else:
+        logger.info(f"Database {DATABASE} already exists")
+except Exception as e:
+    logger.error(f"Database initialization failed: {e}")
+    # Continue anyway, app might still work
+
 if __name__ == '__main__':
-    # Initialize database if needed (for cloud deployments)
-    init_db_if_needed()
-    
     # Get port from environment variable (Railway, Heroku, etc.) or default to 5000
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
-else:
-    # For production deployments (gunicorn), ensure DB exists
-    init_db_if_needed()
