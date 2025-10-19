@@ -704,8 +704,32 @@ def xss_challenge():
         </div>
         
         <script>
+            // Auto-reveal flag when page loads (after XSS injection)
+            document.addEventListener('DOMContentLoaded', function() {
+                // Check if there's a query parameter (indicating XSS attempt)
+                var urlParams = new URLSearchParams(window.location.search);
+                var query = urlParams.get('q');
+                
+                // If query contains script tags, automatically reveal the flag
+                if (query && (query.includes('<script>') || query.includes('&lt;script&gt;'))) {
+                    setTimeout(function() {
+                        var flagContainer = document.getElementById('flag-container');
+                        if (flagContainer) {
+                            flagContainer.style.display = 'block';
+                            flagContainer.style.background = '#2a2a2a';
+                            flagContainer.style.padding = '20px';
+                            flagContainer.style.border = '2px solid #4CAF50';
+                            flagContainer.style.borderRadius = '12px';
+                            flagContainer.style.color = '#4CAF50';
+                        }
+                    }, 500);
+                }
+            });
             
-            window.revealFlag = function() {
+            // Override alert to also reveal flag
+            var originalAlert = window.alert;
+            window.alert = function(message) {
+                // Show the flag when alert is called
                 var flagContainer = document.getElementById('flag-container');
                 if (flagContainer) {
                     flagContainer.style.display = 'block';
@@ -715,13 +739,8 @@ def xss_challenge():
                     flagContainer.style.borderRadius = '12px';
                     flagContainer.style.color = '#4CAF50';
                 }
-            };
-            
-            
-            window.showFlag = function() {
-                document.getElementById('flag-container').style.display = 'block';
-                document.getElementById('flag-container').style.color = '#4CAF50';
-                document.getElementById('flag-container').style.border = '2px solid #4CAF50';
+                // Then show the original alert
+                originalAlert(message);
             };
         </script>
     </body>
