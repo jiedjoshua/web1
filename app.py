@@ -231,10 +231,59 @@ def xss_challenge():
     </html>
     ''', query=query)
 
-if __name__ == '__main__':
-    # Initialize database on startup
+def init_db_if_needed():
+    """Initialize database if it doesn't exist (for Railway/cloud deployments)"""
     if not os.path.exists(DATABASE):
-        print("Database not found. Please run 'python seed_db.py' first.")
-        exit(1)
+        print("Database not found. Initializing...")
+        import subprocess
+        try:
+            subprocess.run(['python', 'seed_db.py'], check=True)
+            print("Database initialized successfully!")
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to initialize database: {e}")
+            # Try to create a minimal database as fallback
+            create_minimal_db()
+
+def create_minimal_db():
+    """Create minimal database as fallback"""
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            CREATE TABLE users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                bio TEXT
+            )
+        ''')
+        
+        users_data = [
+            ('alice', 'password123', 'Regular user Alice - loves cats and coding'),
+            ('bob', 'secret456', 'Bob from accounting - enjoys fishing on weekends'),
+            ('admin', 'super_secure_admin_pass_2025', 'Administrator account - flag{sql_injection_mastery_2025}')
+        ]
+        
+        cursor.executemany(
+            'INSERT INTO users (username, password, bio) VALUES (?, ?, ?)',
+            users_data
+        )
+        
+        conn.commit()
+        conn.close()
+        print("Minimal database created successfully!")
+        
+    except Exception as e:
+        print(f"Failed to create minimal database: {e}")
+
+if __name__ == '__main__':
+    # Initialize database if needed (for cloud deployments)
+    init_db_if_needed()
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Get port from environment variable (Railway, Heroku, etc.) or default to 5000
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
+else:
+    # For production deployments (gunicorn), ensure DB exists
+    init_db_if_needed()
