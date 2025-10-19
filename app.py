@@ -335,20 +335,18 @@ def sql_injection_challenge():
                     error = "Login Unsuccessful - No matching user found in database"
                 
             except sqlite3.Error as e:
-                # Show detailed database errors (helpful for SQL injection learning)
+                # Handle SQL errors more gracefully for better injection experience
                 error_msg = str(e)
-                if "syntax error" in error_msg.lower():
-                    error = f"Database Syntax Error: {error_msg}"
-                elif "no such column" in error_msg.lower():
-                    error = f"Database Schema Error: {error_msg}"
-                elif "unrecognized token" in error_msg.lower():
-                    error = f"Database Token Error: {error_msg}"
-                else:
-                    error = f"Database Error: {error_msg}"
-                
-                # Also log the failed query for educational purposes
                 print(f"[ERROR] SQL Error with query: {query}")
                 print(f"[ERROR] Error details: {error_msg}")
+                
+                # For syntax errors, show a more generic message to avoid breaking the flow
+                if any(keyword in error_msg.lower() for keyword in ["syntax error", "unrecognized token", "near"]):
+                    error = "Login Unsuccessful - Invalid characters in input"
+                elif "no such column" in error_msg.lower():
+                    error = f"Database Schema Error: {error_msg}"
+                else:
+                    error = "Login Unsuccessful - Database connection error"
         else:
             if not username and not password:
                 error = "Login Unsuccessful - Username and password are required"
@@ -706,15 +704,25 @@ def xss_challenge():
         </div>
         
         <script>
-            // Function to reveal flag (can be called via XSS)
-            function revealFlag() {
+            
+            window.revealFlag = function() {
+                var flagContainer = document.getElementById('flag-container');
+                if (flagContainer) {
+                    flagContainer.style.display = 'block';
+                    flagContainer.style.background = '#2a2a2a';
+                    flagContainer.style.padding = '20px';
+                    flagContainer.style.border = '2px solid #4CAF50';
+                    flagContainer.style.borderRadius = '12px';
+                    flagContainer.style.color = '#4CAF50';
+                }
+            };
+            
+            
+            window.showFlag = function() {
                 document.getElementById('flag-container').style.display = 'block';
-                document.getElementById('flag-container').style.background = '#2a2a2a';
-                document.getElementById('flag-container').style.padding = '20px';
-                document.getElementById('flag-container').style.border = '2px solid #4CAF50';
-                document.getElementById('flag-container').style.borderRadius = '12px';
                 document.getElementById('flag-container').style.color = '#4CAF50';
-            }
+                document.getElementById('flag-container').style.border = '2px solid #4CAF50';
+            };
         </script>
     </body>
     </html>
