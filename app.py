@@ -699,7 +699,7 @@ def xss_challenge():
             
             <!-- Hidden flag that can be revealed through XSS -->
             <div class="hidden-flag" id="flag-container">
-                <p><strong>FLAG:</strong> flag{xss_expert_2025}</p>
+                <p><strong>FLAG:</strong> flag{n4dale_mo_boi!}</p>
             </div>
         </div>
         
@@ -778,7 +778,7 @@ def create_minimal_db():
         users_data = [
             ('alice', 'password123', 'Regular user Alice - loves cats and coding'),
             ('bob', 'secret456', 'Bob from accounting - enjoys fishing on weekends'),
-            ('admin', 'super_secure_admin_pass_2025', 'Administrator account - flag{sql_injection_mastery_2025}')
+            ('admin', 'super_secure_admin_pass_2025', 'Administrator account - flag{h4ck3r_yarns?}')
         ]
         
         cursor.executemany(
